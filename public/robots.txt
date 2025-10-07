@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /admin/
+Disallow: /admin
+
+Sitemap: https://annie-fontaine.be/sitemap.xml

@@ -1,0 +1,45 @@
+{
+    "name": "laravel-vue-inertia-boilerplate",
+    "version": "1.0.0",
+    "description": "Laravel 12 + Vue 3 + Inertia.js + Filament boilerplate",
+    "type": "module",
+    "scripts": {
+        "build": "vite build",
+        "dev": "vite",
+        "clean": "rm -rf public/build/* bootstrap/cache/*",
+        "preview": "vite preview",
+        "lint": "eslint resources/js --ext .js,.vue",
+        "lint:fix": "eslint resources/js --ext .js,.vue --fix",
+        "test": "vitest",
+        "test:ui": "vitest --ui"
+    },
+    "devDependencies": {
+        "@inertiajs/vue3": "^2.0.0",
+        "@tailwindcss/forms": "^0.5.3",
+        "@vitejs/plugin-vue": "^5.2.1",
+        "autoprefixer": "^10.4.12",
+        "axios": "^1.7.4",
+        "concurrently": "^9.0.1",
+        "eslint": "^9.0.0",
+        "eslint-plugin-vue": "^9.0.0",
+        "laravel-vite-plugin": "^1.0",
+        "postcss": "^8.4.31",
+        "tailwindcss": "^4.0.0",
+        "vite": "^6.0",
+        "vitest": "^2.0.0",
+        "@vue/test-utils": "^2.4.0",
+        "jsdom": "^25.0.0",
+        "vue": "^3.4.0"
+    },
+    "dependencies": {
+        "@headlessui/vue": "^1.7.23",
+        "@tailwindcss/postcss": "^4.1.11",
+        "@vuelidate/core": "^2.0.3",
+        "@vuelidate/validators": "^2.0.4",
+        "@vueup/vue-quill": "^1.2.0",
+        "date-fns": "^4.1.0",
+        "lucide-vue-next": "^0.471.0",
+        "prismjs": "^1.29.0",
+        "ziggy-js": "^2.4.2"
+    }
+}
