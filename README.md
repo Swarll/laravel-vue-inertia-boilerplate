@@ -121,7 +121,6 @@ After installation, configure these files for your project:
 - [ ] **`LICENSE`**: Replace `[Your Name]` with your name or organization
 - [ ] **`composer.json`**: Change `yourusername` to your GitHub username (line 3)
 - [ ] **`.env`**: Update `APP_NAME`, database credentials, and `APP_URL`
-- [ ] **`.ddev/config.yaml`**: Update `name: annie-fontaine` to your project name (line 1) if using DDEV
 - [ ] **`package.json`**: Update `name` and `description` to match your project (lines 2-4)
 
 ### Recommended Changes
