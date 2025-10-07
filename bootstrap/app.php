@@ -27,7 +27,6 @@ return Application::configure(basePath: dirname(__DIR__))
             SubstituteBindings::class,
             \App\Http\Middleware\HandleInertiaRequests::class,
             \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
-            \App\Http\Middleware\TrackPostViews::class,
         ]);
 
         $middleware->api([
