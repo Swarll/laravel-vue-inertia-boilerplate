@@ -7,7 +7,7 @@ import { createApp, h } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { ZiggyVue } from 'ziggy-js'
 import vuelidate from '@vuelidate/core'
-import {Ziggy} from "@/ziggy.js";
+import { Ziggy } from '@/ziggy.js'
 
 createInertiaApp({
     title: (title) => title || import.meta.env.VITE_APP_NAME || 'Laravel',

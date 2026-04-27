@@ -12,7 +12,7 @@
                 </div>
 
                 <div class="bg-white rounded-lg shadow-lg p-8 prose prose-lg max-w-none">
-                    <div v-html="readmeHtml"></div>
+                    <div v-html="readmeHtml" />
                 </div>
             </div>
         </div>

@@ -16,11 +16,11 @@ class WelcomeController extends Controller
             ? File::get($readmePath)
             : '# Welcome\n\nREADME.md not found.';
 
-        $parsedown = new Parsedown();
+        $parsedown = new Parsedown;
         $readmeHtml = $parsedown->text($readmeContent);
 
         return Inertia::render('Welcome', [
-            'readmeHtml' => $readmeHtml
+            'readmeHtml' => $readmeHtml,
         ]);
     }
 }

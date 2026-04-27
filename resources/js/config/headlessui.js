@@ -131,7 +131,7 @@ export function classNames(...classes) {
 // Utility function to get component styles
 export function getComponentStyles(component, variant = 'default', size = 'md') {
   const config = headlessUIConfig[component]
-  if (!config) return ''
+  if (!config) {return ''}
   
   let classes = config.base || ''
   

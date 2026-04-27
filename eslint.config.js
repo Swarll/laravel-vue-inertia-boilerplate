@@ -8,6 +8,21 @@ export default [
             ecmaVersion: 'latest',
             sourceType: 'module',
             globals: {
+                window: 'readonly',
+                document: 'readonly',
+                console: 'readonly',
+                process: 'readonly',
+                fetch: 'readonly',
+                URL: 'readonly',
+                URLSearchParams: 'readonly',
+                FormData: 'readonly',
+                localStorage: 'readonly',
+                sessionStorage: 'readonly',
+                setTimeout: 'readonly',
+                clearTimeout: 'readonly',
+                setInterval: 'readonly',
+                clearInterval: 'readonly',
+                requestAnimationFrame: 'readonly',
                 // Vue 3 Composition API globals
                 defineProps: 'readonly',
                 defineEmits: 'readonly',
@@ -26,7 +41,7 @@ export default [
                 multiline: 1
             }],
             'vue/html-indent': ['warn', 4],
-            'vue/component-tags-order': ['warn', {
+            'vue/block-order': ['warn', {
                 order: ['template', 'script', 'style']
             }],
 
@@ -55,6 +70,7 @@ export default [
             'public/**',
             'storage/**',
             'bootstrap/cache/**',
+            'resources/js/ziggy.js',
         ]
     }
 ]

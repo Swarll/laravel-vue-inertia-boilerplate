@@ -1,7 +1,7 @@
 name: laravel-vue-inertia-boilerplate
 type: laravel
 docroot: public
-php_version: "8.3"
+php_version: "8.5"
 webserver_type: apache-fpm
 xdebug_enabled: false
 additional_hostnames: []
@@ -12,7 +12,7 @@ database:
 use_dns_when_possible: true
 composer_version: "2"
 corepack_enable: false
-nodejs_version: "18"
+nodejs_version: "22"
 web_environment:
   - VITE_SERVER_HOST=0.0.0.0
 hooks:

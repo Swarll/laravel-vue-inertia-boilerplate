@@ -4,26 +4,26 @@ A clean, production-ready boilerplate for building modern web applications with 
 
 ## Stack
 
-- **Backend**: Laravel 12 (PHP 8.3+)
-- **Frontend**: Vue.js 3 + Inertia.js
-- **Admin Panel**: Filament 3
+- **Backend**: Laravel 12 (PHP 8.3+, tested on 8.5)
+- **Frontend**: Vue.js 3.5 + Inertia.js 2
+- **Admin Panel**: Filament 4
 - **Styling**: Tailwind CSS 4
-- **Build Tool**: Vite 6
-- **Testing**: PHPUnit (backend) + Vitest (frontend)
-- **Code Quality**: ESLint + Laravel Pint
+- **Build Tool**: Vite 7
+- **Testing**: PHPUnit 11 (backend) + Vitest 3 (frontend)
+- **Code Quality**: ESLint 9 + Laravel Pint
 - **Local Development**: DDEV (optional)
 
 ## Features
 
 - ✅ Laravel 12 with latest dependencies
-- ✅ Vue 3 with Composition API
-- ✅ Inertia.js for seamless SPA experience
-- ✅ Filament 3 admin panel
+- ✅ Vue 3.5 with Composition API
+- ✅ Inertia.js 2 for seamless SPA experience
+- ✅ Filament 4 admin panel
 - ✅ Tailwind CSS 4 with @tailwindcss/forms
 - ✅ HeadlessUI for accessible components
 - ✅ Lucide icons
 - ✅ Vuelidate for form validation
-- ✅ Vue Quill for rich text editing
+- ✅ TipTap (ProseMirror) rich text editor — see `resources/js/Components/RichTextEditor.vue`
 - ✅ Laravel Horizon for queue management
 - ✅ Laravel Sanctum for API authentication
 - ✅ Ziggy for named routes in JavaScript
@@ -35,45 +35,46 @@ A clean, production-ready boilerplate for building modern web applications with 
 
 ### Prerequisites
 
-- PHP 8.3+
+- PHP 8.3+ (8.5 recommended)
 - Composer
-- Node.js 18+ and npm
+- Node.js 22+ and npm
 - Database (MySQL/MariaDB/PostgreSQL)
 - (Optional) DDEV for local development
 
 ### Installation
 
+The Filament admin panel is already provisioned via `app/Providers/Filament/AdminPanelProvider.php` — you do **not** need to run `php artisan filament:install`.
+
 #### Option 1: With DDEV (Recommended)
 
-```bash
-# Initialize DDEV
-ddev config --project-type=laravel --docroot=public --php-version=8.3
+DDEV is pre-configured (`.ddev/config.yaml`: PHP 8.5, Node 22, MariaDB 10.11).
 
-# Start DDEV
+```bash
+# Start DDEV (builds containers, installs deps via post-start hook)
 ddev start
 
 # Install dependencies
 ddev composer install
-ddev exec npm install
+ddev npm install
 
 # Setup environment
 ddev exec cp .env.example .env
-ddev exec php artisan key:generate
+ddev artisan key:generate
 
 # Run migrations
-ddev exec php artisan migrate
-
-# Install Filament
-ddev exec php artisan filament:install --panels
+ddev artisan migrate
 
 # Generate Ziggy routes for JavaScript
-ddev exec php artisan ziggy:generate
+ddev artisan ziggy:generate
+
+# Create a Filament admin user
+ddev artisan make:filament-user
 
 # Build assets
-ddev exec npm run build
+ddev npm run build
 
 # For development with HMR
-ddev exec npm run dev
+ddev npm run dev
 ```
 
 #### Option 2: Without DDEV
@@ -87,27 +88,22 @@ npm install
 cp .env.example .env
 php artisan key:generate
 
-# Configure your database in .env
-# DB_CONNECTION=mysql
-# DB_HOST=127.0.0.1
-# DB_PORT=3306
-# DB_DATABASE=your_database
-# DB_USERNAME=your_username
-# DB_PASSWORD=your_password
+# Default driver is SQLite — `database/database.sqlite` is created on install.
+# To use MySQL/MariaDB/PostgreSQL, set DB_CONNECTION/DB_HOST/etc. in .env.
 
 # Run migrations
 php artisan migrate
 
-# Install Filament
-php artisan filament:install --panels
-
 # Generate Ziggy routes for JavaScript
 php artisan ziggy:generate
+
+# Create a Filament admin user
+php artisan make:filament-user
 
 # Build assets
 npm run build
 
-# Start development servers
+# Start development servers (or use `composer dev` for all-in-one)
 php artisan serve
 npm run dev
 ```
@@ -164,7 +160,8 @@ composer dev
 npm run lint
 npm run lint:fix
 
-# Run Laravel Pint
+# Run Laravel Pint (style check / auto-fix)
+./vendor/bin/pint --test
 ./vendor/bin/pint
 
 # Run PHPUnit tests
@@ -215,28 +212,42 @@ resources/
     └── app.blade.php      # Main layout for Inertia
 
 routes/
-└── web/
-    └── pages.php          # Your web routes
+├── web.php                # Loads route files from web/ — add yours via web/
+├── web/
+│   └── pages.php          # Public page routes
+└── api.php                # API routes
+
+bootstrap/
+├── app.php                # App config (routing, middleware, exceptions)
+└── providers.php          # Service provider registration
 
 config/                     # Laravel configuration files
 database/migrations/        # Database migrations
-tests/                      # PHPUnit tests
+tests/                      # PHPUnit tests (Unit + Feature)
 ```
+
+### Routing & middleware
+
+- Web/api routes are wired via `bootstrap/app.php` (`withRouting()`); there is **no** `RouteServiceProvider` (removed — was double-registering routes).
+- The `web` middleware group only appends `HandleInertiaRequests` and `AddLinkHeadersForPreloadedAssets`; the rest comes from Laravel's defaults.
+- API uses `statefulApi()` (Sanctum) + `throttleApi()` with the `api` rate limiter (120/min) defined in `AppServiceProvider::boot()`.
+- A `password-reset` rate limiter (5/min) is also defined there.
 
 ## Filament Admin Panel
 
-Access the admin panel at `/admin` after running:
+The admin panel is already provisioned at `/admin`. Just create a user:
 
 ```bash
-php artisan filament:install --panels
 php artisan make:filament-user
 ```
 
+The panel provider is at `app/Providers/Filament/AdminPanelProvider.php` — customise colours, branding, and middleware there.
+
 ## Additional Packages Included
 
-- **Laravel Horizon**: Queue monitoring at `/horizon`
-- **Laravel Nightwatch**: Database monitoring
-- **Laravel Sanctum**: API authentication
+- **Laravel Horizon**: Queue dashboard at `/horizon`
+- **Laravel Nightwatch**: Application performance monitoring (APM)
+- **Laravel Sanctum**: SPA / token API authentication
 - **Ziggy**: Use Laravel named routes in JavaScript
 - **Vuelidate**: Form validation for Vue
 - **date-fns**: Modern date utility library
@@ -258,8 +269,8 @@ npm install -D typescript vue-tsc @vue/tsconfig
 If you don't need certain features:
 
 ```bash
-# Remove Quill editor
-npm uninstall @vueup/vue-quill
+# Remove TipTap editor (also delete resources/js/Components/RichTextEditor.vue)
+npm uninstall @tiptap/vue-3 @tiptap/starter-kit @tiptap/pm
 
 # Remove Vuelidate
 npm uninstall @vuelidate/core @vuelidate/validators
@@ -270,13 +281,6 @@ composer remove laravel/horizon
 
 ## Troubleshooting
 
-### Common Issues
-
-**"Class 'Parsedown' not found"**
-```bash
-composer install
-```
-
 **"Vite manifest not found"**
 ```bash
 npm install && npm run build
@@ -285,6 +289,11 @@ npm install && npm run build
 **"Target class [WelcomeController] does not exist"**
 ```bash
 composer dump-autoload
+```
+
+**Ziggy import error during `vite build`**
+```bash
+php artisan ziggy:generate
 ```
 
 **ESLint errors**
